@@ -2,645 +2,601 @@
    LOS ANGELES ROLEPLAY
 ======================================== */
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
 
-    /* ========================================
-       MOBILE NAVIGATION
-    ======================================== */
+        /* ========================================
+           MOBILE NAVIGATION
+        ======================================== */
 
-    const menuButton =
-        document.getElementById("menuButton");
+        const menuButton =
+            document.getElementById(
+                "menuButton"
+            );
 
-    const navLinks =
-        document.getElementById("navLinks");
-
-
-    if (menuButton && navLinks) {
-
-        menuButton.addEventListener("click", () => {
-
-            navLinks.classList.toggle("open");
-
-        });
+        const navLinks =
+            document.getElementById(
+                "navLinks"
+            );
 
 
-        navLinks
-            .querySelectorAll("a")
-            .forEach((link) => {
+        if (menuButton && navLinks) {
 
-                link.addEventListener("click", () => {
+            menuButton.addEventListener(
+                "click",
+                () => {
 
-                    navLinks.classList.remove("open");
+                    navLinks.classList.toggle(
+                        "open"
+                    );
+
+                }
+            );
+
+
+            navLinks
+                .querySelectorAll("a")
+                .forEach((link) => {
+
+                    link.addEventListener(
+                        "click",
+                        () => {
+
+                            navLinks
+                                .classList
+                                .remove("open");
+
+                        }
+                    );
 
                 });
 
-            });
-
-    }
+        }
 
 
 
-    /* ========================================
-       SCROLL REVEAL
-    ======================================== */
+        /* ========================================
+           NAVBAR
+        ======================================== */
 
-    document.body.classList.add("reveal-ready");
-
-    const revealElements =
-        document.querySelectorAll(".reveal");
-
-
-    if ("IntersectionObserver" in window) {
-
-        const revealObserver =
-            new IntersectionObserver(
-
-                (entries, observer) => {
-
-                    entries.forEach((entry) => {
-
-                        if (entry.isIntersecting) {
-
-                            entry.target
-                                .classList
-                                .add("visible");
-
-                            observer.unobserve(
-                                entry.target
-                            );
-
-                        }
-
-                    });
-
-                },
-
-                {
-                    threshold: 0.12
-                }
-
+        const navbar =
+            document.querySelector(
+                ".navbar"
             );
 
 
-        revealElements.forEach((element) => {
+        window.addEventListener(
+            "scroll",
+            () => {
 
-            revealObserver.observe(element);
-
-        });
-
-    } else {
-
-        revealElements.forEach((element) => {
-
-            element.classList.add("visible");
-
-        });
-
-    }
+                if (!navbar) return;
 
 
+                navbar.style.background =
+                    window.scrollY > 30
+                        ? "rgba(5, 5, 6, 0.94)"
+                        : "rgba(5, 5, 6, 0.78)";
 
-    /* ========================================
-       NAVBAR BACKGROUND ON SCROLL
-    ======================================== */
-
-    const navbar =
-        document.querySelector(".navbar");
-
-
-    window.addEventListener("scroll", () => {
-
-        if (!navbar) return;
-
-
-        if (window.scrollY > 30) {
-
-            navbar.style.background =
-                "rgba(5, 5, 6, 0.94)";
-
-        } else {
-
-            navbar.style.background =
-                "rgba(5, 5, 6, 0.78)";
-
-        }
-
-    });
-
-
-
-    /* ========================================
-       APPLICATION SUCCESS SCREEN
-    ======================================== */
-
-    const urlParams =
-        new URLSearchParams(
-            window.location.search
+            }
         );
 
 
-    const applicationSubmitted =
-        urlParams.get("submitted");
+
+        /* ========================================
+           SCROLL REVEAL
+        ======================================== */
+
+        document.body.classList.add(
+            "reveal-ready"
+        );
 
 
-    if (applicationSubmitted === "true") {
-
-        const applicationPage =
-            document.getElementById(
-                "staff-application"
+        const revealElements =
+            document.querySelectorAll(
+                ".reveal"
             );
 
 
-        if (applicationPage) {
+        if (
+            "IntersectionObserver" in window
+        ) {
 
-            applicationPage.innerHTML = `
+            const observer =
+                new IntersectionObserver(
 
-                <div class="application-success-content">
+                    (entries, observer) => {
+
+                        entries.forEach(
+                            (entry) => {
+
+                                if (
+                                    entry.isIntersecting
+                                ) {
+
+                                    entry.target
+                                        .classList
+                                        .add(
+                                            "visible"
+                                        );
+
+                                    observer
+                                        .unobserve(
+                                            entry.target
+                                        );
+
+                                }
+
+                            }
+                        );
+
+                    },
+
+                    {
+                        threshold: 0.12
+                    }
+
+                );
 
 
-                    <div class="success-checkmark">
-                        ✓
-                    </div>
+            revealElements.forEach(
+                (element) => {
+
+                    observer.observe(
+                        element
+                    );
+
+                }
+            );
+
+        } else {
+
+            revealElements.forEach(
+                (element) => {
+
+                    element.classList.add(
+                        "visible"
+                    );
+
+                }
+            );
+
+        }
 
 
-                    <p class="success-label">
-                        STAFF APPLICATION
-                    </p>
+
+        /* ========================================
+           APPLICATION SUCCESS
+        ======================================== */
+
+        const parameters =
+            new URLSearchParams(
+                window.location.search
+            );
 
 
-                    <h1>
-                        Application Received
-                    </h1>
+        if (
+            parameters.get("submitted")
+            === "true"
+        ) {
+
+            const applicationSection =
+                document.getElementById(
+                    "staff-application"
+                );
 
 
-                    <p class="success-description">
+            if (applicationSection) {
 
-                        Your application has been successfully
-                        submitted to the Los Angeles Roleplay
-                        Staff Team.
-
-                    </p>
-
-
-
-                    <div class="success-status-card">
+                applicationSection
+                    .classList
+                    .add(
+                        "submitted-application"
+                    );
 
 
-                        <div
-                            class="success-status-dot"
-                        ></div>
+                applicationSection.innerHTML = `
+
+                    <div class="application-success-content">
+
+                        <div class="success-checkmark">
+                            ✓
+                        </div>
 
 
-                        <div>
+                        <p class="success-label">
+                            STAFF APPLICATION
+                        </p>
 
-                            <span>
-                                APPLICATION STATUS
-                            </span>
 
-                            <strong>
-                                Pending Review
-                            </strong>
+                        <h1>
+                            Application Received
+                        </h1>
+
+
+                        <p class="success-description">
+
+                            Your application has been
+                            successfully submitted to the
+                            Los Angeles Roleplay Staff Team.
+
+                        </p>
+
+
+                        <div class="success-status-card">
+
+                            <div
+                                class="success-status-dot"
+                            ></div>
+
+                            <div>
+
+                                <span>
+                                    APPLICATION STATUS
+                                </span>
+
+                                <strong>
+                                    Pending Review
+                                </strong>
+
+                            </div>
 
                         </div>
 
 
-                    </div>
+                        <div class="success-next">
+
+                            <h3>
+                                What happens next?
+                            </h3>
+
+                            <p>
+
+                                Your application will now
+                                be reviewed by the Los
+                                Angeles Roleplay Staff Team.
+
+                            </p>
+
+                            <p>
+
+                                Please remain patient.
+                                Asking staff members to
+                                review your application may
+                                result in it being denied.
+
+                            </p>
+
+                        </div>
 
 
+                        <div class="success-actions">
 
-                    <div class="success-next">
+                            <a
+                                href="/index.html"
+                                class="success-primary"
+                            >
+                                Return Home
+                            </a>
 
+                            <a
+                                href="https://discord.gg/EVZqjQpxMm"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="success-secondary"
+                            >
+                                Join Discord
+                            </a>
 
-                        <h3>
-                            What happens next?
-                        </h3>
-
-
-                        <p>
-
-                            Your application will now be
-                            reviewed by the Los Angeles
-                            Roleplay Staff Team.
-
-                        </p>
-
-
-                        <p>
-
-                            Please remain patient while your
-                            application is being reviewed.
-
-                            Asking staff members to review
-                            your application may result in
-                            your application being denied.
-
-                        </p>
-
-
-                    </div>
-
-
-
-                    <div class="success-actions">
-
-
-                        <a
-                            href="/index.html"
-                            class="success-primary"
-                        >
-                            Return Home
-                        </a>
-
-
-                        <a
-                            href="https://discord.gg/EVZqjQpxMm"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="success-secondary"
-                        >
-                            Join Discord
-                        </a>
-
+                        </div>
 
                     </div>
 
+                `;
 
-                </div>
-
-            `;
+            }
 
         }
 
-    }
 
 
+        /* ========================================
+           APPLICATION FORM
+        ======================================== */
 
-    /* ========================================
-       STAFF APPLICATION SYSTEM
-    ======================================== */
-
-    const form =
-        document.getElementById(
-            "staffApplication"
-        );
-
-
-    if (form) {
-
-        console.log(
-            "Staff application system loaded!"
-        );
+        const applicationForm =
+            document.getElementById(
+                "staffApplication"
+            );
 
 
-        form.addEventListener(
-            "submit",
-            async (event) => {
+        if (applicationForm) {
+
+            console.log(
+                "LARP application system ready."
+            );
 
 
-                /* ========================================
-                   STOP NORMAL FORM RELOAD
-                ======================================== */
-
-                event.preventDefault();
+            applicationForm.addEventListener(
+                "submit",
+                async (event) => {
 
 
-                console.log(
-                    "Application submit detected!"
-                );
+                    event.preventDefault();
 
 
-
-                /* ========================================
-                   SUBMIT BUTTON
-                ======================================== */
-
-                const submitButton =
-                    form.querySelector(
-                        'button[type="submit"]'
-                    );
-
-
-                const originalButtonText =
-                    submitButton
-                        ? submitButton.textContent
-                        : "Submit Application";
-
-
-                if (submitButton) {
-
-                    submitButton.disabled = true;
-
-                    submitButton.textContent =
-                        "Submitting...";
-
-                }
-
-
-
-                try {
-
-
-                    /* ========================================
-                       COLLECT APPLICATION DATA
-                    ======================================== */
-
-                    const formData =
-                        new FormData(form);
-
-
-                    const applicationData =
-                        Object.fromEntries(
-                            formData.entries()
-                        );
-
-
-                    console.log(
-                        "Application data:",
-                        applicationData
-                    );
-
-
-
-                    /* ========================================
-                       SEND APPLICATION TO API
-                    ======================================== */
-
-                    const response =
-                        await fetch(
-                            "/api/submit-applications",
-                            {
-
-                                method: "POST",
-
-                                headers: {
-
-                                    "Content-Type":
-                                        "application/json"
-
-                                },
-
-                                body:
-                                    JSON.stringify(
-                                        applicationData
-                                    )
-
-                            }
-                        );
-
-
-
-                    console.log(
-                        "API response status:",
-                        response.status
-                    );
-
-
-
-                    /* ========================================
-                       READ API RESPONSE
-                    ======================================== */
-
-                    const responseText =
-                        await response.text();
-
-
-                    let result = {};
-
-
-                    if (responseText) {
-
-                        try {
-
-                            result =
-                                JSON.parse(
-                                    responseText
-                                );
-
-                        } catch (error) {
-
-                            console.warn(
-                                "API returned non-JSON:",
-                                responseText
+                    const submitButton =
+                        applicationForm
+                            .querySelector(
+                                'button[type="submit"]'
                             );
 
 
-                            /*
-                                If the request succeeded
-                                but the response wasn't JSON,
-                                still allow the successful
-                                application redirect.
-                            */
+                    const originalText =
+                        submitButton
+                            ? submitButton.textContent
+                            : "Submit Application";
 
-                            if (response.ok) {
 
-                                result = {
-                                    success: true
-                                };
+                    if (submitButton) {
 
-                            } else {
+                        submitButton.disabled =
+                            true;
 
-                                throw new Error(
-                                    "The application server returned an unexpected response."
-                                );
+                        submitButton.textContent =
+                            "Submitting...";
+
+                    }
+
+
+                    try {
+
+
+                        /* ================================
+                           FORM DATA
+                        ================================ */
+
+                        const formData =
+                            new FormData(
+                                applicationForm
+                            );
+
+
+                        const data =
+                            Object.fromEntries(
+                                formData.entries()
+                            );
+
+
+
+                        /* ================================
+                           SEND
+                        ================================ */
+
+                        const response =
+                            await fetch(
+                                "/api/submit-applications",
+                                {
+
+                                    method: "POST",
+
+                                    headers: {
+
+                                        "Content-Type":
+                                            "application/json"
+
+                                    },
+
+                                    body:
+                                        JSON.stringify(
+                                            data
+                                        )
+
+                                }
+                            );
+
+
+
+                        /* ================================
+                           RESPONSE
+                        ================================ */
+
+                        const responseText =
+                            await response.text();
+
+
+                        let result = {};
+
+
+                        try {
+
+                            if (responseText) {
+
+                                result =
+                                    JSON.parse(
+                                        responseText
+                                    );
 
                             }
+
+                        } catch {
+
+                            throw new Error(
+                                "The application server returned an invalid response."
+                            );
+
+                        }
+
+
+
+                        /* ================================
+                           ERROR
+                        ================================ */
+
+                        if (!response.ok) {
+
+                            throw new Error(
+
+                                result.message ||
+
+                                "Application submission failed."
+
+                            );
+
+                        }
+
+
+
+                        /* ================================
+                           SUCCESS
+                        ================================ */
+
+                        if (
+                            result.success !== true
+                        ) {
+
+                            throw new Error(
+                                "Application submission could not be confirmed."
+                            );
+
+                        }
+
+
+                        applicationForm.reset();
+
+
+                        window.location.replace(
+                            "/applications.html?submitted=true"
+                        );
+
+
+                    } catch (error) {
+
+
+                        console.error(
+                            "APPLICATION ERROR:",
+                            error
+                        );
+
+
+                        alert(
+
+                            "Your application could not be submitted.\n\n" +
+
+                            error.message
+
+                        );
+
+
+                        if (submitButton) {
+
+                            submitButton.disabled =
+                                false;
+
+                            submitButton.textContent =
+                                originalText;
 
                         }
 
                     }
 
+                }
+            );
 
-
-                    /* ========================================
-                       CHECK RESPONSE
-                    ======================================== */
-
-                    if (!response.ok) {
-
-                        throw new Error(
-
-                            result.message ||
-
-                            "Application submission failed."
-
-                        );
-
-                    }
+        }
 
 
 
-                    /* ========================================
-                       APPLICATION SUCCESS
-                    ======================================== */
+        /* ========================================
+           REGULATIONS SEARCH
+        ======================================== */
 
-                    console.log(
-                        "Application submitted successfully!"
+        const ruleSearch =
+            document.getElementById(
+                "ruleSearch"
+            );
+
+
+        const rules =
+            document.querySelectorAll(
+                ".rule-card"
+            );
+
+
+        const noRules =
+            document.getElementById(
+                "noRules"
+            );
+
+
+        if (
+            ruleSearch &&
+            rules.length > 0
+        ) {
+
+            ruleSearch.addEventListener(
+                "input",
+                () => {
+
+                    const search =
+                        ruleSearch.value
+                            .toLowerCase()
+                            .trim();
+
+
+                    let visibleRules = 0;
+
+
+                    rules.forEach(
+                        (rule) => {
+
+                            const text =
+                                rule.textContent
+                                    .toLowerCase();
+
+
+                            if (
+                                text.includes(
+                                    search
+                                )
+                            ) {
+
+                                rule.classList
+                                    .remove(
+                                        "rule-hidden"
+                                    );
+
+                                visibleRules++;
+
+                            } else {
+
+                                rule.classList
+                                    .add(
+                                        "rule-hidden"
+                                    );
+
+                            }
+
+                        }
                     );
 
 
-                    /*
-                        Clear the application form.
-                    */
+                    if (noRules) {
 
-                    form.reset();
-
-
-                    /*
-                        Redirect back to applications
-                        with submitted=true.
-
-                        The success-screen code above
-                        will detect this and replace
-                        the application with the
-                        confirmation screen.
-                    */
-
-                    window.location.href =
-                        "/applications.html?submitted=true";
-
-
-                } catch (error) {
-
-
-                    /* ========================================
-                       APPLICATION ERROR
-                    ======================================== */
-
-                    console.error(
-                        "APPLICATION ERROR:",
-                        error
-                    );
-
-
-                    alert(
-
-                        "Your application could not be submitted.\n\n" +
-
-                        error.message
-
-                    );
-
-
-
-                    /*
-                        Allow applicant to try again.
-                    */
-
-                    if (submitButton) {
-
-                        submitButton.disabled =
-                            false;
-
-                        submitButton.textContent =
-                            originalButtonText;
+                        noRules.classList
+                            .toggle(
+                                "show",
+                                visibleRules === 0
+                            );
 
                     }
 
                 }
+            );
 
-            }
-        );
+        }
+
 
     }
-
-
-
-    /* ========================================
-       REGULATIONS SEARCH
-    ======================================== */
-
-    const ruleSearch =
-        document.getElementById(
-            "ruleSearch"
-        );
-
-
-    const rules =
-        document.querySelectorAll(
-            ".rule-card"
-        );
-
-
-    const noRules =
-        document.getElementById(
-            "noRules"
-        );
-
-
-    if (
-        ruleSearch &&
-        rules.length > 0
-    ) {
-
-        ruleSearch.addEventListener(
-            "input",
-            () => {
-
-
-                const search =
-                    ruleSearch.value
-                        .toLowerCase()
-                        .trim();
-
-
-                let visibleRules = 0;
-
-
-
-                rules.forEach((rule) => {
-
-
-                    const ruleText =
-                        rule.textContent
-                            .toLowerCase();
-
-
-                    if (
-                        ruleText.includes(search)
-                    ) {
-
-                        rule.classList.remove(
-                            "rule-hidden"
-                        );
-
-                        visibleRules++;
-
-                    } else {
-
-                        rule.classList.add(
-                            "rule-hidden"
-                        );
-
-                    }
-
-                });
-
-
-
-                if (noRules) {
-
-                    if (visibleRules === 0) {
-
-                        noRules.classList.add(
-                            "show"
-                        );
-
-                    } else {
-
-                        noRules.classList.remove(
-                            "show"
-                        );
-
-                    }
-
-                }
-
-
-            }
-        );
-
-    }
-
-
-});
+);
