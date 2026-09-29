@@ -47,6 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.body.classList.add("reveal-ready");
 
+
     const revealElements =
         document.querySelectorAll(".reveal");
 
@@ -55,6 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const revealObserver =
             new IntersectionObserver(
+
                 (entries, observer) => {
 
                     entries.forEach((entry) => {
@@ -74,9 +76,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     });
 
                 },
+
                 {
                     threshold: 0.12
                 }
+
             );
 
 
@@ -132,7 +136,9 @@ document.addEventListener("DOMContentLoaded", () => {
     ======================================== */
 
     const form =
-        document.getElementById("staffApplication");
+        document.getElementById(
+            "staffApplication"
+        );
 
 
     if (form) {
@@ -166,6 +172,10 @@ document.addEventListener("DOMContentLoaded", () => {
                         : "Submit Application";
 
 
+                /* ========================================
+                   DISABLE BUTTON
+                ======================================== */
+
                 if (submitButton) {
 
                     submitButton.disabled = true;
@@ -178,9 +188,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 try {
 
-                    /* ------------------------
-                       COLLECT FORM DATA
-                    ------------------------ */
+
+                    /* ========================================
+                       COLLECT APPLICATION
+                    ======================================== */
 
                     const formData =
                         new FormData(form);
@@ -198,9 +209,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     );
 
 
-                    /* ------------------------
-                       SEND APPLICATION
-                    ------------------------ */
+
+                    /* ========================================
+                       SEND TO API
+                    ======================================== */
 
                     const response =
                         await fetch(
@@ -210,8 +222,10 @@ document.addEventListener("DOMContentLoaded", () => {
                                 method: "POST",
 
                                 headers: {
+
                                     "Content-Type":
                                         "application/json"
+
                                 },
 
                                 body:
@@ -227,9 +241,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     );
 
 
-                    /* ------------------------
-                       READ RESPONSE SAFELY
-                    ------------------------ */
+
+                    /* ========================================
+                       READ API RESPONSE
+                    ======================================== */
 
                     const responseText =
                         await response.text();
@@ -255,14 +270,6 @@ document.addEventListener("DOMContentLoaded", () => {
                             );
 
 
-                            /*
-                               If the HTTP request itself
-                               succeeded, don't tell the
-                               applicant their application
-                               failed just because the
-                               response wasn't JSON.
-                            */
-
                             if (response.ok) {
 
                                 result = {
@@ -282,62 +289,56 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
 
 
-                    /* ------------------------
-                       CHECK FOR API ERROR
-                    ------------------------ */
+
+                    /* ========================================
+                       API ERROR
+                    ======================================== */
 
                     if (!response.ok) {
 
                         throw new Error(
+
                             result.message ||
+
                             "Application submission failed."
+
                         );
 
                     }
 
 
-                    /* ------------------------
+
+                    /* ========================================
                        SUCCESS
-                    ------------------------ */
+                    ======================================== */
 
                     console.log(
-                        "Application submitted successfully."
+                        "Application submitted successfully!"
                     );
 
 
-                    form.reset();
-
-const successScreen =
-    document.getElementById(
-        "applicationSuccess"
-    );
-
-if (successScreen) {
-
-    successScreen.classList.add(
-        "active"
-    );
-
-    document.body.style.overflow =
-        "hidden";
-
-}
-
+                    /*
+                        Clear the application.
+                    */
 
                     form.reset();
 
 
-                    window.scrollTo({
-                        top: 0,
-                        behavior: "smooth"
-                    });
+                    /*
+                        Redirect applicant to the
+                        success page.
+                    */
+
+                    window.location.href =
+                        "application-success.html";
 
 
                 } catch (error) {
 
-                    /* ------------------------
+
+                    /* ========================================
                        ERROR
-                    ------------------------ */
+                    ======================================== */
 
                     console.error(
                         "APPLICATION ERROR:",
@@ -351,11 +352,10 @@ if (successScreen) {
                     );
 
 
-                } finally {
-
-                    /* ------------------------
-                       RESTORE BUTTON
-                    ------------------------ */
+                    /*
+                        Re-enable submit button
+                        because submission failed.
+                    */
 
                     if (submitButton) {
 
@@ -381,18 +381,27 @@ if (successScreen) {
     ======================================== */
 
     const ruleSearch =
-        document.getElementById("ruleSearch");
+        document.getElementById(
+            "ruleSearch"
+        );
+
 
     const rules =
         document.querySelectorAll(
             ".rule-card"
         );
 
+
     const noRules =
-        document.getElementById("noRules");
+        document.getElementById(
+            "noRules"
+        );
 
 
-    if (ruleSearch && rules.length > 0) {
+    if (
+        ruleSearch &&
+        rules.length > 0
+    ) {
 
         ruleSearch.addEventListener(
             "input",
@@ -415,7 +424,9 @@ if (successScreen) {
 
 
                     if (
-                        ruleText.includes(search)
+                        ruleText.includes(
+                            search
+                        )
                     ) {
 
                         rule.classList.remove(
@@ -437,7 +448,9 @@ if (successScreen) {
 
                 if (noRules) {
 
-                    if (visibleRules === 0) {
+                    if (
+                        visibleRules === 0
+                    ) {
 
                         noRules.classList.add(
                             "show"
