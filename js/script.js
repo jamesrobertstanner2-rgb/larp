@@ -47,7 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.body.classList.add("reveal-ready");
 
-
     const revealElements =
         document.querySelectorAll(".reveal");
 
@@ -132,6 +131,152 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* ========================================
+       APPLICATION SUCCESS SCREEN
+    ======================================== */
+
+    const urlParams =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const applicationSubmitted =
+        urlParams.get("submitted");
+
+
+    if (applicationSubmitted === "true") {
+
+        const applicationPage =
+            document.getElementById(
+                "staff-application"
+            );
+
+
+        if (applicationPage) {
+
+            applicationPage.innerHTML = `
+
+                <div class="application-success-content">
+
+
+                    <div class="success-checkmark">
+                        ✓
+                    </div>
+
+
+                    <p class="success-label">
+                        STAFF APPLICATION
+                    </p>
+
+
+                    <h1>
+                        Application Received
+                    </h1>
+
+
+                    <p class="success-description">
+
+                        Your application has been successfully
+                        submitted to the Los Angeles Roleplay
+                        Staff Team.
+
+                    </p>
+
+
+
+                    <div class="success-status-card">
+
+
+                        <div
+                            class="success-status-dot"
+                        ></div>
+
+
+                        <div>
+
+                            <span>
+                                APPLICATION STATUS
+                            </span>
+
+                            <strong>
+                                Pending Review
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="success-next">
+
+
+                        <h3>
+                            What happens next?
+                        </h3>
+
+
+                        <p>
+
+                            Your application will now be
+                            reviewed by the Los Angeles
+                            Roleplay Staff Team.
+
+                        </p>
+
+
+                        <p>
+
+                            Please remain patient while your
+                            application is being reviewed.
+
+                            Asking staff members to review
+                            your application may result in
+                            your application being denied.
+
+                        </p>
+
+
+                    </div>
+
+
+
+                    <div class="success-actions">
+
+
+                        <a
+                            href="/index.html"
+                            class="success-primary"
+                        >
+                            Return Home
+                        </a>
+
+
+                        <a
+                            href="https://discord.gg/EVZqjQpxMm"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="success-secondary"
+                        >
+                            Join Discord
+                        </a>
+
+
+                    </div>
+
+
+                </div>
+
+            `;
+
+        }
+
+    }
+
+
+
+    /* ========================================
        STAFF APPLICATION SYSTEM
     ======================================== */
 
@@ -150,7 +295,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         form.addEventListener(
             "submit",
-            async function (event) {
+            async (event) => {
+
+
+                /* ========================================
+                   STOP NORMAL FORM RELOAD
+                ======================================== */
 
                 event.preventDefault();
 
@@ -159,6 +309,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     "Application submit detected!"
                 );
 
+
+
+                /* ========================================
+                   SUBMIT BUTTON
+                ======================================== */
 
                 const submitButton =
                     form.querySelector(
@@ -172,10 +327,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         : "Submit Application";
 
 
-                /* ========================================
-                   DISABLE BUTTON
-                ======================================== */
-
                 if (submitButton) {
 
                     submitButton.disabled = true;
@@ -186,18 +337,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
+
                 try {
 
 
                     /* ========================================
-                       COLLECT APPLICATION
+                       COLLECT APPLICATION DATA
                     ======================================== */
 
                     const formData =
                         new FormData(form);
 
 
-                    const data =
+                    const applicationData =
                         Object.fromEntries(
                             formData.entries()
                         );
@@ -205,13 +357,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     console.log(
                         "Application data:",
-                        data
+                        applicationData
                     );
 
 
 
                     /* ========================================
-                       SEND TO API
+                       SEND APPLICATION TO API
                     ======================================== */
 
                     const response =
@@ -229,10 +381,13 @@ document.addEventListener("DOMContentLoaded", () => {
                                 },
 
                                 body:
-                                    JSON.stringify(data)
+                                    JSON.stringify(
+                                        applicationData
+                                    )
 
                             }
                         );
+
 
 
                     console.log(
@@ -262,13 +417,20 @@ document.addEventListener("DOMContentLoaded", () => {
                                     responseText
                                 );
 
-                        } catch (parseError) {
+                        } catch (error) {
 
                             console.warn(
                                 "API returned non-JSON:",
                                 responseText
                             );
 
+
+                            /*
+                                If the request succeeded
+                                but the response wasn't JSON,
+                                still allow the successful
+                                application redirect.
+                            */
 
                             if (response.ok) {
 
@@ -291,7 +453,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                     /* ========================================
-                       API ERROR
+                       CHECK RESPONSE
                     ======================================== */
 
                     if (!response.ok) {
@@ -309,7 +471,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                     /* ========================================
-                       SUCCESS
+                       APPLICATION SUCCESS
                     ======================================== */
 
                     console.log(
@@ -318,26 +480,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                     /*
-                        Clear the application.
+                        Clear the application form.
                     */
 
                     form.reset();
 
 
                     /*
-                        Redirect applicant to the
-                        success page.
+                        Redirect back to applications
+                        with submitted=true.
+
+                        The success-screen code above
+                        will detect this and replace
+                        the application with the
+                        confirmation screen.
                     */
 
                     window.location.href =
-                        "application-success.html";
+                        "/applications.html?submitted=true";
 
 
                 } catch (error) {
 
 
                     /* ========================================
-                       ERROR
+                       APPLICATION ERROR
                     ======================================== */
 
                     console.error(
@@ -347,14 +514,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                     alert(
+
                         "Your application could not be submitted.\n\n" +
+
                         error.message
+
                     );
 
 
+
                     /*
-                        Re-enable submit button
-                        because submission failed.
+                        Allow applicant to try again.
                     */
 
                     if (submitButton) {
@@ -407,6 +577,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "input",
             () => {
 
+
                 const search =
                     ruleSearch.value
                         .toLowerCase()
@@ -416,7 +587,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 let visibleRules = 0;
 
 
+
                 rules.forEach((rule) => {
+
 
                     const ruleText =
                         rule.textContent
@@ -424,9 +597,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                     if (
-                        ruleText.includes(
-                            search
-                        )
+                        ruleText.includes(search)
                     ) {
 
                         rule.classList.remove(
@@ -446,11 +617,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
 
 
+
                 if (noRules) {
 
-                    if (
-                        visibleRules === 0
-                    ) {
+                    if (visibleRules === 0) {
 
                         noRules.classList.add(
                             "show"
@@ -465,6 +635,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
 
                 }
+
 
             }
         );
