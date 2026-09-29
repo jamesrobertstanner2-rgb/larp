@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Applications | Los Angeles Roleplay</title>
+
+    <meta
+        name="description"
+        content="Apply to join the Los Angeles Roleplay staff team."
+    >
+
+    <link rel="icon" href="assets/images/larp.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@600;700;800;900&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- NAVIGATION -->
+    <header class="navbar">
+
+        <a href="index.html" class="brand">
+
+            <img
+                src="assets/images/larp.png"
+                alt="Los Angeles Roleplay"
+            >
+
+            <div>
+                <strong>LOS ANGELES</strong>
+                <span>ROLEPLAY</span>
+            </div>
+
+        </a>
+
+
+        <nav class="nav-links" id="navLinks">
+
+            <a href="index.html">Home</a>
+            <a href="index.html#about">About</a>
+            <a href="departments.html">Departments</a>
+            <a href="regulations.html">Regulations</a>
+
+            <a
+                href="applications.html"
+                class="active"
+            >
+                Applications
+            </a>
+
+        </nav>
+
+
+        <a
+            href="https://discord.gg/EVZqjQpxMm"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="nav-button"
+        >
+            Join Community
+        </a>
+
+
+        <button
+            class="menu-button"
+            id="menuButton"
+            aria-label="Open navigation"
+        >
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+    </header>
+
+
+
+    <main class="applications-page">
+
+        <!-- HERO -->
+        <section class="applications-hero">
+
+            <div class="applications-hero-content reveal">
+
+                <span>JOIN OUR TEAM</span>
+
+                <h1>
+                    Community
+                    <b>Applications.</b>
+                </h1>
+
+                <p>
+                    Interested in becoming part of the team behind
+                    Los Angeles Roleplay? Complete an application
+                    below and tell us why you'd be a good addition
+                    to our community.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- APPLICATION STATUS -->
+        <section class="application-centre">
+
+            <div class="application-heading reveal">
+
+                <span>APPLICATION CENTRE</span>
+
+                <h2>Available Applications</h2>
+
+                <p>
+                    Application availability may change depending
+                    on the current needs of Los Angeles Roleplay.
+                </p>
+
+            </div>
+
+
+            <div class="application-options">
+
+                <!-- STAFF -->
+                <article class="application-card application-open reveal">
+
+                    <div class="application-status open">
+                        OPEN
+                    </div>
+
+                    <span class="application-number">
+                        01
+                    </span>
+
+                    <h3>Staff Team</h3>
+
+                    <p>
+                        Apply to join the Los Angeles Roleplay
+                        moderation team and help maintain a
+                        professional and enjoyable community.
+                    </p>
+
+                    <a
+                        href="#staff-application"
+                        class="application-button"
+                    >
+                        Start Application
+                        <span>→</span>
+                    </a>
+
+                </article>
+
+
+                <!-- LAPD -->
+                <article class="application-card reveal">
+
+                    <div class="application-status development">
+                        IN DEVELOPMENT
+                    </div>
+
+                    <span class="application-number">
+                        02
+                    </span>
+
+                    <h3>LAPD</h3>
+
+                    <p>
+                        Los Angeles Police Department applications
+                        are currently being developed.
+                    </p>
+
+                    <button
+                        class="application-button disabled"
+                        disabled
+                    >
+                        Unavailable
+                    </button>
+
+                </article>
+
+
+                <!-- LAFD -->
+                <article class="application-card reveal">
+
+                    <div class="application-status development">
+                        IN DEVELOPMENT
+                    </div>
+
+                    <span class="application-number">
+                        03
+                    </span>
+
+                    <h3>LAFD</h3>
+
+                    <p>
+                        Los Angeles Fire Department applications
+                        are currently being developed.
+                    </p>
+
+                    <button
+                        class="application-button disabled"
+                        disabled
+                    >
+                        Unavailable
+                    </button>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- STAFF APPLICATION -->
+        <section
+            class="staff-application-section"
+            id="staff-application"
+        >
+
+            <div class="staff-application-container">
+
+                <div class="application-heading reveal">
+
+                    <span>STAFF TEAM</span>
+
+                    <h2>Staff Application</h2>
+
+                    <p>
+                        Please answer every question honestly and
+                        with sufficient detail. Low-effort or
+                        incomplete applications may be denied.
+                    </p>
+
+                </div>
+
+
+                <!-- IMPORTANT NOTICE -->
+                <div class="application-notice reveal">
+
+                    <div class="notice-icon">
+                        !
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Before you apply
+                        </strong>
+
+                        <p>
+                            Take your time when answering each
+                            question. Your responses will be used
+                            to determine whether you are suitable
+                            for the Los Angeles Roleplay staff team.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- FORM -->
+                <form
+                    class="staff-application-form reveal"
+                    id="staffApplication"
+                >
+
+                    <!-- QUESTION 1 -->
+                    <div class="application-question">
+
+                        <label for="discordUsername">
+
+                            <span>01</span>
+
+                            What is your Discord username?
+
+                        </label>
+
+                        <input
+                            type="text"
+                            id="discordUsername"
+                            name="discordUsername"
+                            placeholder="ExampleUser"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- QUESTION 2 -->
+                    <div class="application-question">
+
+                        <label for="robloxUsername">
+
+                            <span>02</span>
+
+                            What is your Roblox username?
+
+                        </label>
+
+                        <input
+                            type="text"
+                            id="robloxUsername"
+                            name="robloxUsername"
+                            placeholder="Enter your Roblox username"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- QUESTION 3 -->
+                    <div class="application-question">
+
+                        <label for="age">
+
+                            <span>03</span>
+
+                            How old are you?
+
+                        </label>
+
+                        <input
+                            type="number"
+                            id="age"
+                            name="age"
+                            placeholder="Enter your age"
+                            min="1"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- QUESTION 4 -->
+                    <div class="application-question">
+
+                        <label for="timezone">
+
+                            <span>04</span>
+
+                            What is your timezone?
+
+                        </label>
+
+                        <input
+                            type="text"
+                            id="timezone"
+                            name="timezone"
+                            placeholder="Example: EST, PST, AEST"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- QUESTION 5 -->
+                    <div class="application-question">
+
+                        <label for="whyStaff">
+
+                            <span>05</span>
+
+                            Why do you want to become a staff member
+                            at Los Angeles Roleplay?
+
+                        </label>
+
+                        <textarea
+                            id="whyStaff"
+                            name="whyStaff"
+                            placeholder="Explain why you want to join our staff team..."
+                            minlength="50"
+                            required
+                        ></textarea>
+
+                        <small>
+                            Minimum 50 characters
+                        </small>
+
+                    </div>
+
+
+                    <!-- QUESTION 6 -->
+                    <div class="application-question">
+
+                        <label for="experience">
+
+                            <span>06</span>
+
+                            Do you have any previous moderation or
+                            staff experience? If so, explain.
+
+                        </label>
+
+                        <textarea
+                            id="experience"
+                            name="experience"
+                            placeholder="Tell us about your previous experience..."
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- QUESTION 7 -->
+                    <div class="application-question">
+
+                        <label for="strengths">
+
+                            <span>07</span>
+
+                            What qualities or strengths would you
+                            bring to the Los Angeles Roleplay staff
+                            team?
+
+                        </label>
+
+                        <textarea
+                            id="strengths"
+                            name="strengths"
+                            placeholder="Tell us what you could bring to the team..."
+                            minlength="40"
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- QUESTION 8 -->
+                    <div class="application-question">
+
+                        <label for="rdm">
+
+                            <span>08</span>
+
+                            Explain what Random Deathmatch (RDM) is
+                            and provide an example.
+
+                        </label>
+
+                        <textarea
+                            id="rdm"
+                            name="rdm"
+                            placeholder="Explain RDM and provide an example..."
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- QUESTION 9 -->
+                    <div class="application-question">
+
+                        <label for="vdm">
+
+                            <span>09</span>
+
+                            Explain what Vehicle Deathmatch (VDM)
+                            is and provide an example.
+
+                        </label>
+
+                        <textarea
+                            id="vdm"
+                            name="vdm"
+                            placeholder="Explain VDM and provide an example..."
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- QUESTION 10 -->
+                    <div class="application-question">
+
+                        <label for="frp">
+
+                            <span>10</span>
+
+                            Explain what Fail Roleplay (FRP) is
+                            and provide an example.
+
+                        </label>
+
+                        <textarea
+                            id="frp"
+                            name="frp"
+                            placeholder="Explain FRP and provide an example..."
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- QUESTION 11 -->
+                    <div class="application-question">
+
+                        <label for="scenarioOne">
+
+                            <span>11</span>
+
+                            You notice a player randomly killing
+                            other players without a valid roleplay
+                            reason. How would you handle the
+                            situation?
+
+                        </label>
+
+                        <textarea
+                            id="scenarioOne"
+                            name="scenarioOne"
+                            placeholder="Explain the actions you would take..."
+                            minlength="50"
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- QUESTION 12 -->
+                    <div class="application-question">
+
+                        <label for="scenarioTwo">
+
+                            <span>12</span>
+
+                            Two players are accusing each other of
+                            VDM, but neither player has sufficient
+                            evidence. How would you handle the
+                            situation?
+
+                        </label>
+
+                        <textarea
+                            id="scenarioTwo"
+                            name="scenarioTwo"
+                            placeholder="Explain how you would handle this situation..."
+                            minlength="50"
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- QUESTION 13 -->
+                    <div class="application-question">
+
+                        <label for="staffAbuse">
+
+                            <span>13</span>
+
+                            You witness another staff member abusing
+                            their moderation permissions. What would
+                            you do?
+
+                        </label>
+
+                        <textarea
+                            id="staffAbuse"
+                            name="staffAbuse"
+                            placeholder="Explain what actions you would take..."
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- QUESTION 14 -->
+                    <div class="application-question">
+
+                        <label for="activity">
+
+                            <span>14</span>
+
+                            How active can you be within Los Angeles
+                            Roleplay each week?
+
+                        </label>
+
+                        <textarea
+                            id="activity"
+                            name="activity"
+                            placeholder="Tell us about your general availability..."
+                            required
+                        ></textarea>
+
+                    </div>
+
+
+                    <!-- QUESTION 15 -->
+                    <div class="application-question">
+
+                        <label>
+
+                            <span>15</span>
+
+                            Do you understand that asking staff to
+                            review your application may result in
+                            your application being denied?
+
+                        </label>
+
+                        <div class="application-choice">
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="reviewAgreement"
+                                    value="yes"
+                                    required
+                                >
+                                Yes, I understand
+                            </label>
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="reviewAgreement"
+                                    value="no"
+                                >
+                                No
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- QUESTION 16 -->
+                    <div class="application-question">
+
+                        <label>
+
+                            <span>16</span>
+
+                            Do you understand that acceptance into
+                            the application stage does not guarantee
+                            a permanent staff position?
+
+                        </label>
+
+                        <div class="application-choice">
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="acceptanceAgreement"
+                                    value="yes"
+                                    required
+                                >
+                                Yes, I understand
+                            </label>
+
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="acceptanceAgreement"
+                                    value="no"
+                                >
+                                No
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- SUBMIT -->
+                    <div class="application-submit">
+
+                        <div>
+
+                            <strong>
+                                Ready to submit?
+                            </strong>
+
+                            <p>
+                                Review your answers before
+                                submitting your application.
+                            </p>
+
+                        </div>
+
+                        <button type="submit">
+                            Submit Application
+                            <span>→</span>
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- FOOTER -->
+    <footer>
+
+        <div class="footer-top">
+
+            <div class="footer-brand">
+
+                <img
+                    src="assets/images/larp.png"
+                    alt="Los Angeles Roleplay"
+                >
+
+                <h3>
+                    LOS ANGELES ROLEPLAY
+                </h3>
+
+                <p>
+                    An immersive ER:LC roleplay community
+                    inspired by Los Angeles, California.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <div>
+
+                    <strong>COMMUNITY</strong>
+
+                    <a href="index.html">Home</a>
+                    <a href="index.html#about">About</a>
+                    <a href="departments.html">Departments</a>
+
+                </div>
+
+
+                <div>
+
+                    <strong>RESOURCES</strong>
+
+                    <a href="regulations.html">Regulations</a>
+                    <a href="applications.html">Applications</a>
+
+                    <a
+                        href="https://discord.gg/EVZqjQpxMm"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Discord
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <span>
+                © 2026 Webora.
+                All rights reserved.
+            </span>
+
+            <span>
+                Not affiliated with Roblox Corporation
+                or Police Roleplay Community.
+            </span>
+
+        </div>
+
+    </footer>
+
+
+    <script src="js/script.js"></script>
+
+</body>
+
+</html>
