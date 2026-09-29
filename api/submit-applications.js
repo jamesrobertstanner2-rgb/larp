@@ -1,20 +1,29 @@
 export default async function handler(req, res) {
 
-    // Only allow POST requests
+    /* ========================================
+       METHOD CHECK
+    ======================================== */
+
     if (req.method !== "POST") {
+
         return res.status(405).json({
             success: false,
             message: "Method not allowed."
         });
+
     }
 
+
     try {
+
+        /* ========================================
+           WEBHOOK
+        ======================================== */
 
         const webhookURL =
             process.env.APPLICATION_WEBHOOK_URL;
 
 
-        // Check webhook exists
         if (!webhookURL) {
 
             console.error(
@@ -24,11 +33,15 @@ export default async function handler(req, res) {
             return res.status(500).json({
                 success: false,
                 message:
-                    "The application webhook has not been configured."
+                    "The application system has not been configured."
             });
 
         }
 
+
+        /* ========================================
+           APPLICATION DATA
+        ======================================== */
 
         const {
             discordUsername,
@@ -47,27 +60,13 @@ export default async function handler(req, res) {
             activity,
             reviewAgreement,
             acceptanceAgreement
-        } = req.body;
+        } = req.body || {};
 
 
-        // Clean text for Discord
-        function clean(value, max = 1000) {
+        /* ========================================
+           REQUIRED FIELDS
+        ======================================== */
 
-            if (
-                value === undefined ||
-                value === null ||
-                value === ""
-            ) {
-                return "No response provided.";
-            }
-
-            return String(value)
-                .substring(0, max);
-
-        }
-
-
-        // Basic validation
         if (
             !discordUsername ||
             !robloxUsername ||
@@ -78,8 +77,31 @@ export default async function handler(req, res) {
             return res.status(400).json({
                 success: false,
                 message:
-                    "Required application information is missing."
+                    "Please complete all required application questions."
             });
+
+        }
+
+
+        /* ========================================
+           CLEAN TEXT
+        ======================================== */
+
+        function clean(value, max = 1000) {
+
+            if (
+                value === undefined ||
+                value === null ||
+                String(value).trim() === ""
+            ) {
+
+                return "No response provided.";
+
+            }
+
+            return String(value)
+                .trim()
+                .substring(0, max);
 
         }
 
@@ -91,11 +113,11 @@ export default async function handler(req, res) {
         const embed = {
 
             title:
-                "New Staff Application",
+                "📋 New Staff Application",
 
             description:
                 "**Application Status:** 🟡 Pending\n\n" +
-                "A new staff application has been submitted through the Los Angeles Roleplay website.",
+                "A new application has been submitted through the Los Angeles Roleplay website.",
 
             color: 16753920,
 
@@ -103,17 +125,13 @@ export default async function handler(req, res) {
 
                 {
                     name: "Discord Username",
-                    value: clean(
-                        discordUsername
-                    ),
+                    value: clean(discordUsername),
                     inline: true
                 },
 
                 {
                     name: "Roblox Username",
-                    value: clean(
-                        robloxUsername
-                    ),
+                    value: clean(robloxUsername),
                     inline: true
                 },
 
@@ -211,7 +229,7 @@ export default async function handler(req, res) {
 
                 {
                     name:
-                        "Application Review Agreement",
+                        "Review Agreement",
 
                     value:
                         reviewAgreement === "yes"
@@ -236,8 +254,10 @@ export default async function handler(req, res) {
             ],
 
             footer: {
+
                 text:
                     "Los Angeles Roleplay • Staff Applications"
+
             },
 
             timestamp:
@@ -256,14 +276,16 @@ export default async function handler(req, res) {
                 method: "POST",
 
                 headers: {
+
                     "Content-Type":
                         "application/json"
+
                 },
 
                 body: JSON.stringify({
 
                     username:
-                        "Los Angeles Roleplay",
+                        "Los Angeles Roleplay Applications",
 
                     embeds: [embed]
 
@@ -278,18 +300,18 @@ export default async function handler(req, res) {
 
         if (!discordResponse.ok) {
 
-            const discordError =
+            const errorText =
                 await discordResponse.text();
 
 
             console.error(
                 "DISCORD ERROR:",
                 discordResponse.status,
-                discordError
+                errorText
             );
 
 
-            return res.status(500).json({
+            return res.status(502).json({
 
                 success: false,
 
@@ -297,10 +319,7 @@ export default async function handler(req, res) {
                     "Discord rejected the application.",
 
                 discordStatus:
-                    discordResponse.status,
-
-                discordError:
-                    discordError
+                    discordResponse.status
 
             });
 
@@ -315,6 +334,8 @@ export default async function handler(req, res) {
 
             success: true,
 
+            status: "pending",
+
             message:
                 "Application submitted successfully."
 
@@ -322,6 +343,7 @@ export default async function handler(req, res) {
 
 
     } catch (error) {
+
 
         console.error(
             "APPLICATION API ERROR:",
