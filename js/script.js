@@ -305,10 +305,23 @@ document.addEventListener("DOMContentLoaded", () => {
                     );
 
 
-                    alert(
-                        "Application submitted successfully!\n\n" +
-                        "Your application is now Pending and will be reviewed by the Los Angeles Roleplay staff team."
-                    );
+                    form.reset();
+
+const successScreen =
+    document.getElementById(
+        "applicationSuccess"
+    );
+
+if (successScreen) {
+
+    successScreen.classList.add(
+        "active"
+    );
+
+    document.body.style.overflow =
+        "hidden";
+
+}
 
 
                     form.reset();
