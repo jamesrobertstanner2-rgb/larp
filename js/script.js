@@ -4,6 +4,7 @@
 
 document.addEventListener("DOMContentLoaded", () => {
 
+
     /* ========================================
        MOBILE NAVIGATION
     ======================================== */
@@ -33,125 +34,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     navLinks.classList.remove("open");
 
                 });
-/* ========================================
-   STAFF APPLICATION SUBMISSION
-======================================== */
 
-const staffApplication =
-    document.getElementById(
-        "staffApplication"
-    );
-
-
-if (staffApplication) {
-
-    staffApplication.addEventListener(
-        "submit",
-        async (event) => {
-
-            event.preventDefault();
-
-
-            const submitButton =
-                staffApplication.querySelector(
-                    'button[type="submit"]'
-                );
-
-
-            const originalButton =
-                submitButton.innerHTML;
-
-
-            submitButton.disabled = true;
-
-            submitButton.innerHTML =
-                "Submitting...";
-
-
-            try {
-
-                const formData =
-                    new FormData(
-                        staffApplication
-                    );
-
-
-                const applicationData =
-                    Object.fromEntries(
-                        formData.entries()
-                    );
-
-
-                const response =
-                    await fetch(
-                        "/api/submit-application",
-                        {
-
-                            method: "POST",
-
-                            headers: {
-                                "Content-Type":
-                                    "application/json"
-                            },
-
-                            body:
-                                JSON.stringify(
-                                    applicationData
-                                )
-
-                        }
-                    );
-
-
-                const result =
-                    await response.json();
-
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        result.message ||
-                        "Submission failed."
-                    );
-
-                }
-
-
-                alert(
-                    "Application submitted successfully!\n\n"
-                    + "Your application is now Pending and will be reviewed by the Los Angeles Roleplay staff team."
-                );
-
-
-                staffApplication.reset();
-
-
-            } catch (error) {
-
-                console.error(error);
-
-
-                alert(
-                    "Your application could not be submitted.\n\n"
-                    + error.message
-                );
-
-            } finally {
-
-                submitButton.disabled = false;
-
-                submitButton.innerHTML =
-                    originalButton;
-
-            }
-
-        }
-    );
-
-}
             });
 
     }
+
 
 
     /* ========================================
@@ -210,6 +97,7 @@ if (staffApplication) {
     }
 
 
+
     /* ========================================
        NAVBAR BACKGROUND ON SCROLL
     ======================================== */
@@ -237,178 +125,325 @@ if (staffApplication) {
 
     });
 
-});/* ========================================
-   REGULATIONS SEARCH
-======================================== */
-
-const ruleSearch =
-    document.getElementById("ruleSearch");
-
-const rules =
-    document.querySelectorAll(".rule-card");
-
-const noRules =
-    document.getElementById("noRules");
 
 
-if (ruleSearch && rules.length > 0) {
+    /* ========================================
+       STAFF APPLICATION SYSTEM
+    ======================================== */
 
-    ruleSearch.addEventListener("input", () => {
-
-        const search =
-            ruleSearch.value
-                .toLowerCase()
-                .trim();
-
-        let visibleRules = 0;
+    const form =
+        document.getElementById("staffApplication");
 
 
-        rules.forEach((rule) => {
+    if (form) {
 
-            const ruleText =
-                rule.textContent.toLowerCase();
+        console.log(
+            "Staff application system loaded!"
+        );
 
 
-            if (ruleText.includes(search)) {
+        form.addEventListener(
+            "submit",
+            async function (event) {
 
-                rule.classList.remove(
-                    "rule-hidden"
+                event.preventDefault();
+
+
+                console.log(
+                    "Application submit detected!"
                 );
 
-                visibleRules++;
 
-            } else {
+                const submitButton =
+                    form.querySelector(
+                        'button[type="submit"]'
+                    );
 
-                rule.classList.add(
-                    "rule-hidden"
-                );
+
+                const originalButtonText =
+                    submitButton
+                        ? submitButton.textContent
+                        : "Submit Application";
+
+
+                if (submitButton) {
+
+                    submitButton.disabled = true;
+
+                    submitButton.textContent =
+                        "Submitting...";
+
+                }
+
+
+                try {
+
+                    /* ------------------------
+                       COLLECT FORM DATA
+                    ------------------------ */
+
+                    const formData =
+                        new FormData(form);
+
+
+                    const data =
+                        Object.fromEntries(
+                            formData.entries()
+                        );
+
+
+                    console.log(
+                        "Application data:",
+                        data
+                    );
+
+
+                    /* ------------------------
+                       SEND APPLICATION
+                    ------------------------ */
+
+                    const response =
+                        await fetch(
+                            "/api/submit-applications",
+                            {
+
+                                method: "POST",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
+
+                                body:
+                                    JSON.stringify(data)
+
+                            }
+                        );
+
+
+                    console.log(
+                        "API response status:",
+                        response.status
+                    );
+
+
+                    /* ------------------------
+                       READ RESPONSE SAFELY
+                    ------------------------ */
+
+                    const responseText =
+                        await response.text();
+
+
+                    let result = {};
+
+
+                    if (responseText) {
+
+                        try {
+
+                            result =
+                                JSON.parse(
+                                    responseText
+                                );
+
+                        } catch (parseError) {
+
+                            console.warn(
+                                "API returned non-JSON:",
+                                responseText
+                            );
+
+
+                            /*
+                               If the HTTP request itself
+                               succeeded, don't tell the
+                               applicant their application
+                               failed just because the
+                               response wasn't JSON.
+                            */
+
+                            if (response.ok) {
+
+                                result = {
+                                    success: true
+                                };
+
+                            } else {
+
+                                throw new Error(
+                                    "The application server returned an unexpected response."
+                                );
+
+                            }
+
+                        }
+
+                    }
+
+
+                    /* ------------------------
+                       CHECK FOR API ERROR
+                    ------------------------ */
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            result.message ||
+                            "Application submission failed."
+                        );
+
+                    }
+
+
+                    /* ------------------------
+                       SUCCESS
+                    ------------------------ */
+
+                    console.log(
+                        "Application submitted successfully."
+                    );
+
+
+                    alert(
+                        "Application submitted successfully!\n\n" +
+                        "Your application is now Pending and will be reviewed by the Los Angeles Roleplay staff team."
+                    );
+
+
+                    form.reset();
+
+
+                    window.scrollTo({
+                        top: 0,
+                        behavior: "smooth"
+                    });
+
+
+                } catch (error) {
+
+                    /* ------------------------
+                       ERROR
+                    ------------------------ */
+
+                    console.error(
+                        "APPLICATION ERROR:",
+                        error
+                    );
+
+
+                    alert(
+                        "Your application could not be submitted.\n\n" +
+                        error.message
+                    );
+
+
+                } finally {
+
+                    /* ------------------------
+                       RESTORE BUTTON
+                    ------------------------ */
+
+                    if (submitButton) {
+
+                        submitButton.disabled =
+                            false;
+
+                        submitButton.textContent =
+                            originalButtonText;
+
+                    }
+
+                }
 
             }
+        );
 
-        });
-
-
-        if (noRules) {
-
-            if (visibleRules === 0) {
-
-                noRules.classList.add("show");
-
-            } else {
-
-                noRules.classList.remove("show");
-
-            }
-
-        }
-
-    });
-
-}// ==========================================
-// STAFF APPLICATION SYSTEM
-// ==========================================
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const form = document.getElementById("staffApplication");
-
-    if (!form) {
-        console.log("Staff application form not found.");
-        return;
     }
 
-    console.log("Staff application system loaded!");
-
-    form.addEventListener("submit", async function (event) {
-
-        // STOP THE PAGE RELOADING
-        event.preventDefault();
-
-        console.log("Application submit detected!");
-
-        const submitButton =
-            form.querySelector('button[type="submit"]');
-
-        if (submitButton) {
-            submitButton.disabled = true;
-            submitButton.textContent = "Submitting...";
-        }
-
-        try {
-
-            const formData = new FormData(form);
-
-            const data =
-                Object.fromEntries(formData.entries());
-
-            console.log("Application data:", data);
 
 
-            const response = await fetch(
-                "/api/submit-applications",
-                {
-                    method: "POST",
+    /* ========================================
+       REGULATIONS SEARCH
+    ======================================== */
 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+    const ruleSearch =
+        document.getElementById("ruleSearch");
 
-                    body: JSON.stringify(data)
+    const rules =
+        document.querySelectorAll(
+            ".rule-card"
+        );
+
+    const noRules =
+        document.getElementById("noRules");
+
+
+    if (ruleSearch && rules.length > 0) {
+
+        ruleSearch.addEventListener(
+            "input",
+            () => {
+
+                const search =
+                    ruleSearch.value
+                        .toLowerCase()
+                        .trim();
+
+
+                let visibleRules = 0;
+
+
+                rules.forEach((rule) => {
+
+                    const ruleText =
+                        rule.textContent
+                            .toLowerCase();
+
+
+                    if (
+                        ruleText.includes(search)
+                    ) {
+
+                        rule.classList.remove(
+                            "rule-hidden"
+                        );
+
+                        visibleRules++;
+
+                    } else {
+
+                        rule.classList.add(
+                            "rule-hidden"
+                        );
+
+                    }
+
+                });
+
+
+                if (noRules) {
+
+                    if (visibleRules === 0) {
+
+                        noRules.classList.add(
+                            "show"
+                        );
+
+                    } else {
+
+                        noRules.classList.remove(
+                            "show"
+                        );
+
+                    }
+
                 }
-            );
 
-
-            console.log(
-                "API response status:",
-                response.status
-            );
-
-
-            const result = await response.json();
-
-            console.log(
-                "API response:",
-                result
-            );
-
-
-            if (!response.ok) {
-                throw new Error(
-                    result.message ||
-                    "Application submission failed."
-                );
             }
+        );
 
+    }
 
-            alert(
-                "Your application has been submitted successfully!"
-            );
-
-            form.reset();
-
-
-        } catch (error) {
-
-            console.error(
-                "APPLICATION ERROR:",
-                error
-            );
-
-            alert(
-                "Your application could not be submitted.\n\n" +
-                error.message
-            );
-
-        } finally {
-
-            if (submitButton) {
-                submitButton.disabled = false;
-                submitButton.textContent =
-                    "Submit Application";
-            }
-
-        }
-
-    });
 
 });
