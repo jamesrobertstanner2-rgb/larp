@@ -1,5 +1,6 @@
 export default async function handler(req, res) {
 
+    // Only allow POST requests
     if (req.method !== "POST") {
         return res.status(405).json({
             success: false,
@@ -8,6 +9,26 @@ export default async function handler(req, res) {
     }
 
     try {
+
+        const webhookURL =
+            process.env.APPLICATION_WEBHOOK_URL;
+
+
+        // Check webhook exists
+        if (!webhookURL) {
+
+            console.error(
+                "APPLICATION_WEBHOOK_URL is missing."
+            );
+
+            return res.status(500).json({
+                success: false,
+                message:
+                    "The application webhook has not been configured."
+            });
+
+        }
+
 
         const {
             discordUsername,
@@ -29,51 +50,52 @@ export default async function handler(req, res) {
         } = req.body;
 
 
-        // Make sure required fields exist
+        // Clean text for Discord
+        function clean(value, max = 1000) {
+
+            if (
+                value === undefined ||
+                value === null ||
+                value === ""
+            ) {
+                return "No response provided.";
+            }
+
+            return String(value)
+                .substring(0, max);
+
+        }
+
+
+        // Basic validation
         if (
             !discordUsername ||
             !robloxUsername ||
             !age ||
-            !timezone ||
-            !whyStaff
+            !timezone
         ) {
+
             return res.status(400).json({
                 success: false,
-                message: "Required application information is missing."
+                message:
+                    "Required application information is missing."
             });
+
         }
 
 
-        const webhookURL = process.env.APPLICATION_WEBHOOK_URL;
-
-        if (!webhookURL) {
-            console.error("APPLICATION_WEBHOOK_URL is missing.");
-
-            return res.status(500).json({
-                success: false,
-                message: "Application webhook has not been configured."
-            });
-        }
-
-
-        // Prevent Discord embed field limits causing failures
-        function clean(value, max = 1000) {
-
-            if (!value) {
-                return "No response";
-            }
-
-            return String(value).substring(0, max);
-        }
-
+        /* ========================================
+           DISCORD EMBED
+        ======================================== */
 
         const embed = {
 
-            title: "📋 New Staff Application",
+            title:
+                "New Staff Application",
 
             description:
-                `A new staff application has been submitted.\n\n` +
-                `**Application Status:** 🟡 Pending`,
+                "**Application Status:** 🟡 Pending\n\n" +
+                "A new staff application has been submitted through the Los Angeles Roleplay website.",
 
             color: 16753920,
 
@@ -81,13 +103,17 @@ export default async function handler(req, res) {
 
                 {
                     name: "Discord Username",
-                    value: clean(discordUsername),
+                    value: clean(
+                        discordUsername
+                    ),
                     inline: true
                 },
 
                 {
                     name: "Roblox Username",
-                    value: clean(robloxUsername),
+                    value: clean(
+                        robloxUsername
+                    ),
                     inline: true
                 },
 
@@ -104,160 +130,193 @@ export default async function handler(req, res) {
                 },
 
                 {
-                    name: "Why do you want to become staff?",
-                    value: clean(whyStaff)
+                    name:
+                        "Why do you want to become staff?",
+
+                    value:
+                        clean(whyStaff)
                 },
 
                 {
-                    name: "Previous Experience",
-                    value: clean(experience)
+                    name:
+                        "Previous Staff Experience",
+
+                    value:
+                        clean(experience)
                 },
 
                 {
-                    name: "Strengths",
-                    value: clean(strengths)
+                    name:
+                        "Strengths",
+
+                    value:
+                        clean(strengths)
                 },
 
                 {
-                    name: "Random Deathmatch (RDM)",
-                    value: clean(rdm)
+                    name:
+                        "Random Deathmatch (RDM)",
+
+                    value:
+                        clean(rdm)
                 },
 
                 {
-                    name: "Vehicle Deathmatch (VDM)",
-                    value: clean(vdm)
+                    name:
+                        "Vehicle Deathmatch (VDM)",
+
+                    value:
+                        clean(vdm)
                 },
 
                 {
-                    name: "Fail Roleplay (FRP)",
-                    value: clean(frp)
+                    name:
+                        "Fail Roleplay (FRP)",
+
+                    value:
+                        clean(frp)
                 },
 
                 {
-                    name: "Scenario One",
-                    value: clean(scenarioOne)
+                    name:
+                        "Scenario One",
+
+                    value:
+                        clean(scenarioOne)
                 },
 
                 {
-                    name: "Scenario Two",
-                    value: clean(scenarioTwo)
+                    name:
+                        "Scenario Two",
+
+                    value:
+                        clean(scenarioTwo)
                 },
 
                 {
-                    name: "Staff Abuse Scenario",
-                    value: clean(staffAbuse)
+                    name:
+                        "Staff Abuse Scenario",
+
+                    value:
+                        clean(staffAbuse)
                 },
 
                 {
-                    name: "Weekly Activity",
-                    value: clean(activity)
+                    name:
+                        "Weekly Activity",
+
+                    value:
+                        clean(activity)
                 },
 
                 {
-                    name: "Review Agreement",
+                    name:
+                        "Application Review Agreement",
+
                     value:
                         reviewAgreement === "yes"
                             ? "✅ Yes"
                             : "❌ No",
+
                     inline: true
                 },
 
                 {
-                    name: "Acceptance Agreement",
+                    name:
+                        "Acceptance Agreement",
+
                     value:
                         acceptanceAgreement === "yes"
                             ? "✅ Yes"
                             : "❌ No",
+
                     inline: true
                 }
 
             ],
 
             footer: {
-                text: "Los Angeles Roleplay • Application System"
+                text:
+                    "Los Angeles Roleplay • Staff Applications"
             },
 
-            timestamp: new Date().toISOString()
+            timestamp:
+                new Date().toISOString()
 
         };
 
 
-        const components = [
+        /* ========================================
+           SEND TO DISCORD
+        ======================================== */
 
-            {
-                type: 1,
+        const discordResponse =
+            await fetch(webhookURL, {
 
-                components: [
+                method: "POST",
 
-                    {
-                        type: 2,
-                        style: 3,
-                        label: "Accept",
-                        custom_id: "application_accept"
-                    },
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
 
-                    {
-                        type: 2,
-                        style: 4,
-                        label: "Deny",
-                        custom_id: "application_deny"
-                    }
+                body: JSON.stringify({
 
-                ]
+                    username:
+                        "Los Angeles Roleplay",
 
-            }
+                    embeds: [embed]
 
-        ];
+                })
+
+            });
 
 
-        const discordResponse = await fetch(webhookURL + "?wait=true", {
-
-            method: "POST",
-
-            headers: {
-                "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify({
-                username: "Los Angeles Roleplay",
-                embeds: [embed],
-                components: components
-            })
-
-        });
-
+        /* ========================================
+           DISCORD ERROR
+        ======================================== */
 
         if (!discordResponse.ok) {
 
             const discordError =
                 await discordResponse.text();
 
+
             console.error(
-                "Discord webhook error:",
+                "DISCORD ERROR:",
+                discordResponse.status,
                 discordError
             );
 
+
             return res.status(500).json({
+
                 success: false,
-                message: "Discord rejected the application."
+
+                message:
+                    "Discord rejected the application.",
+
+                discordStatus:
+                    discordResponse.status,
+
+                discordError:
+                    discordError
+
             });
 
         }
 
 
-        const discordMessage =
-            await discordResponse.json();
-
+        /* ========================================
+           SUCCESS
+        ======================================== */
 
         return res.status(200).json({
 
             success: true,
 
             message:
-                "Your application has been submitted successfully.",
-
-            applicationId:
-                discordMessage.id
+                "Application submitted successfully."
 
         });
 
@@ -265,16 +324,17 @@ export default async function handler(req, res) {
     } catch (error) {
 
         console.error(
-            "Application submission error:",
+            "APPLICATION API ERROR:",
             error
         );
+
 
         return res.status(500).json({
 
             success: false,
 
             message:
-                "An unexpected error occurred while submitting your application."
+                "An unexpected server error occurred."
 
         });
 
